@@ -1,21 +1,23 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {recipePropType} from './prop-types/propTypes';
 
-import "./RecipeList.css";
+import './RecipeList.css';
 /* COMPONENTS */
-import Recipe from "./Recipe";
-
+import Recipe from './Recipe';
 
 export class RecipeList extends Component {
+  // Declare prop types
   static propTypes = {
-    recipes: PropTypes.arrayOf(PropTypes.shape(recipePropType))
+    recipes: PropTypes.arrayOf (PropTypes.shape (recipePropType)),
   };
 
-  render() {
-    const recipes = this.props.recipes.map((recipe, index) => (
-      <Recipe key={index} {...recipe} />
-    ));
+  render () {
+    // Loop through recipes array received through props and for each recipe call Recipe component
+    const recipes = this.props.recipes.map (
+      recipe => // Pss recipe id and the entire recipe object to Recipe component
+      <Recipe key={recipe.id} {...recipe} />
+    );
 
     return <div className="recipes-container">{recipes}</div>;
   }
