@@ -1,0 +1,35 @@
+
+.navbar-wrap {
+    display: flex;
+    justify-content: space-between;
+    background: #555;
+    padding: 0 15px;
+    align-content: center;
+}
+
+/* .navbar-wrap > h2 > */
+ header a {
+    color: #fff;
+    text-decoration: none;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: all 0.3s;
+}
+
+header a:hover {
+    opacity: 1;
+}
+
+.nav-links {
+    display: flex;
+    align-content: center;
+    list-style-type: none;
+}
+
+.nav-links a {
+    padding: 0 20px;
+}
+
+.nav-links > li {
+    margin: auto;
+}

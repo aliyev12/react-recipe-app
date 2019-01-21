@@ -1,0 +1,9 @@
+.recipes-container {
+    display: flex;
+}
+
+@media (max-width: 580px) {
+    .recipes-container {
+        flex-direction: column;
+    }
+}
