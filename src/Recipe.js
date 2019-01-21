@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import "./Recipe.css";
 import PropTypes from "prop-types";
+import {recipePropType} from './prop-types/propTypes';
 
 class Recipe extends React.Component {
   static propTypes = {
-    title: PropTypes.string.isRequired,
-    img: PropTypes.string.isRequired,
-    instructions: PropTypes.string.isRequired,
-    ingredients: PropTypes.arrayOf(PropTypes.string).isRequired
+      ...recipePropType,
+      id: PropTypes.string.isRequired,
+      onDelete: PropTypes.func.isRequired
   };
 
   static defaultProps = {
@@ -18,7 +18,7 @@ class Recipe extends React.Component {
   };
 
   render() {
-    const { title, img, instructions } = this.props;
+    const { title, img, instructions, id, onDelete } = this.props;
     const ingredients = this.props.ingredients.map((ing, index) => (
       <li key={index}>{ing}</li>
     ));
@@ -32,7 +32,8 @@ class Recipe extends React.Component {
           <h4>Ingredients:</h4>
           <ul>{ingredients}</ul>
           <h4>Instructions:</h4>
-          <p>{instructions}</p>
+          <p style={{overflow: "hidden", wordBreak: "break-all"}}>{instructions}</p>
+          <button onClick={() => onDelete(id)} type="button">DELETE</button>
         </div>
       </div>
     );

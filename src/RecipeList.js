@@ -10,14 +10,15 @@ export class RecipeList extends Component {
   // Declare prop types
   static propTypes = {
     recipes: PropTypes.arrayOf (PropTypes.shape (recipePropType)),
+    onDelete: PropTypes.func.isRequired,
   };
 
   render () {
+    const {onDelete} = this.props;
     // Loop through recipes array received through props and for each recipe call Recipe component
-    const recipes = this.props.recipes.map (
-      recipe => // Pss recipe id and the entire recipe object to Recipe component
-      <Recipe key={recipe.id} {...recipe} />
-    );
+    const recipes = this.props.recipes.map ((recipe) => ( // Pss recipe id and the entire recipe object to Recipe component
+      <Recipe onDelete={onDelete} key={recipe.id} {...recipe} />
+    ));
 
     return <div className="recipes-container">{recipes}</div>;
   }

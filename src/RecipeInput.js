@@ -6,11 +6,11 @@ import './RecipeInput.css';
 // Create an object representing an empty state
 // Since all form fields are linked to the state, empty state also means plans form input fields
 const emptyState = {
-    title: '',
-    instructions: '',
-    ingredients: [''],
-    img: '',
-  };
+  title: '',
+  instructions: '',
+  ingredients: [''],
+  img: '',
+};
 
 export class RecipeInput extends Component {
   static propTypes = {
@@ -18,12 +18,8 @@ export class RecipeInput extends Component {
     onSave: PropTypes.func.isRequired,
   };
   static defaultProps = {
-    onClose () {
-      console.log ('closing from RecipeInput defaultProps...');
-    },
-    onSave () {
-      console.log ('saving from RecipeInput defaultProps...');
-    },
+    onClose () {},
+    onSave () {},
   };
 
   constructor (props) {
@@ -34,7 +30,7 @@ export class RecipeInput extends Component {
     this.handleChange = this.handleChange.bind (this);
     this.handleNewIngredient = this.handleNewIngredient.bind (this);
     this.handleChangeIng = this.handleChangeIng.bind (this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleSubmit = this.handleSubmit.bind (this);
   }
 
   // Handle input change
@@ -71,8 +67,8 @@ export class RecipeInput extends Component {
 
   handleSubmit (e) {
     e.preventDefault ();
-    this.props.onSave({...this.state});
-    this.setState(emptyState);
+    this.props.onSave ({...this.state});
+    this.setState (emptyState);
   }
 
   render () {
@@ -95,72 +91,72 @@ export class RecipeInput extends Component {
       </div>
     ));
     return (
-      <div className="recipe-form-container">
-        <form
-          className="recipe-form"
-          onSubmit={this.handleSubmit}
-        >
-          <button className="close-button" type="button" onClick={onClose}>
-            X
-          </button>
-          <div className="recipe-form-line">
-            <label htmlFor="recipe-title-input">Title</label>
-            <input
-              type="text"
-              id="recipe-title-input"
-              key="title"
-              name="title"
-              value={title}
-              size={42}
-              autoComplete="off"
-              onChange={this.handleChange}
-            />
+          <div className="recipe-form-container">
+            <form className="recipe-form" onSubmit={this.handleSubmit}>
+              <button className="close-button" type="button" onClick={onClose}>
+                X
+              </button>
+              <div className="recipe-form-line">
+                <label htmlFor="recipe-title-input">Title</label>
+                <input
+                  type="text"
+                  id="recipe-title-input"
+                  key="title"
+                  name="title"
+                  value={title}
+                  size={42}
+                  autoComplete="off"
+                  onChange={this.handleChange}
+                />
+              </div>
+              <label
+                htmlFor="recipe-instructions-input"
+                style={{marginTop: '5px'}}
+              >
+                Instructions
+              </label>
+              <textarea
+                key="instructions"
+                name="instructions"
+                type="Instructions"
+                id="recipe-instructions-input"
+                cols="50"
+                rows="8"
+                autoComplete="off"
+                value={instructions}
+                onChange={this.handleChange}
+              />
+              <p>Ingredients:</p>
+              {inputs}
+              <button
+                className="buttons"
+                type="button"
+                onClick={this.handleNewIngredient}
+              >
+                +
+              </button>
+              <div className="recipe-form-line">
+                <label htmlFor="recipe-img-input">Image URL</label>
+                <input
+                  type="text"
+                  id="recipe-img-input"
+                  placeholder=""
+                  name="img"
+                  value={img}
+                  size={36}
+                  autoComplete="off"
+                  onChange={this.handleChange}
+                />
+                <button
+                  type="submit"
+                  className="buttons"
+                  style={{alignSelf: 'flex-end', marginRight: 0}}
+                >
+                  SAVE
+                </button>
+              </div>
+            </form>
           </div>
-          <label htmlFor="recipe-instructions-input" style={{marginTop: '5px'}}>
-            Instructions
-          </label>
-          <textarea
-            key="instructions"
-            name="instructions"
-            type="Instructions"
-            id="recipe-instructions-input"
-            cols="50"
-            rows="8"
-            autoComplete="off"
-            value={instructions}
-            onChange={this.handleChange}
-          />
-          <p>Ingredients:</p>
-          {inputs}
-          <button
-            className="buttons"
-            type="button"
-            onClick={this.handleNewIngredient}
-          >
-            +
-          </button>
-          <div className="recipe-form-line">
-            <label htmlFor="recipe-img-input">Image URL</label>
-            <input
-              type="text"
-              id="recipe-img-input"
-              placeholder=""
-              name="img"
-              value={img}
-              size={36}
-              autoComplete="off"
-              onChange={this.handleChange}
-            />
-            <button
-              type="submit"
-              className="buttons"
-              style={{alignSelf: 'flex-end', marginRight: 0}}
-            >
-              SAVE
-            </button>
-          </div>
-        </form>
-      </div>
     );
   }
 }

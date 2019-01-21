@@ -36,38 +36,49 @@ class RecipeApp extends Component {
         },
       ],
       nextRecipeId: uuid (),
+      showForm: true,
     };
     // Bind "this" of component scope to methods below
-    this.onClose = this.onClose.bind (this);
-    this.handleSave = this.handleSave.bind(this);
-  }
-
-  onClose (e) {
-    e.preventDefault ();
-    console.log ('closing...');
-  }
-
-  onSave (e) {
-    console.log ('saving from RecipeApp');
-    console.log (e);
+    this.handleSave = this.handleSave.bind (this);
+    this.onDelete = this.onDelete.bind(this);
   }
 
   handleSave (recipe) {
-    this.setState((prevState, props) => {
-        const newRecipe = {...recipe, id: this.state.nextRecipeId};
-        return {
-            nextRecipeId: uuid(),
-            recipes: [...this.state.recipes, newRecipe]
-        }
+    this.setState ((prevState, props) => {
+      const newRecipe = {...recipe, id: this.state.nextRecipeId};
+      return {
+        nextRecipeId: uuid (),
+        recipes: [...this.state.recipes, newRecipe],
+        showForm: false,
+      };
     });
   }
 
+  onDelete(id) {
+    const recipes = this.state.recipes.filter(recipe => recipe.id !== id);
+    this.setState({recipes});
+  }
+
   render () {
+    // Destructure showForm into separate variable from the RecipeInput state
+    // It will be used later to determine whether to show or not the form
+    const {showForm} = this.state;
     return (
       <div className="App">
-        <Navbar />
-        <RecipeInput onClose={this.onClose} onSave={this.handleSave} />
-        <RecipeList recipes={this.state.recipes} />
+        {/* Pass onNewRecipe callback function to Navbar component so that when "New Recipe" link is clicked, 
+        this callback will set showForm within the state to true; therefore, the form will show up */}
+        <Navbar onNewRecipe={() => this.setState ({showForm: true})} />
+
+        {/* If showForm is true then render the RecipeInput component (the form) , else -> do nothing*/}
+            <div>
+              {showForm
+                ? <RecipeInput
+                    onClose={() => this.setState ({showForm: false})}
+                    onSave={this.handleSave}
+                  />
+                : null}
+            </div>
+        <RecipeList onDelete={this.onDelete} recipes={this.state.recipes} />
       </div>
     );
   }
