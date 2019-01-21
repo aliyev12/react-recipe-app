@@ -3,29 +3,38 @@ import PropTypes from 'prop-types';
 
 import './RecipeInput.css';
 
+// Create an object representing an empty state
+// Since all form fields are linked to the state, empty state also means plans form input fields
+const emptyState = {
+    title: '',
+    instructions: '',
+    ingredients: [''],
+    img: '',
+  };
+
 export class RecipeInput extends Component {
   static propTypes = {
     onClose: PropTypes.func.isRequired,
+    onSave: PropTypes.func.isRequired,
   };
   static defaultProps = {
     onClose () {
-      console.log ('closing...');
+      console.log ('closing from RecipeInput defaultProps...');
+    },
+    onSave () {
+      console.log ('saving from RecipeInput defaultProps...');
     },
   };
 
   constructor (props) {
     super (props);
 
-    this.state = {
-      title: '',
-      instructions: '',
-      ingredients: [''],
-      img: '',
-    };
+    this.state = emptyState;
     // Bind the "this" for RecipeInput class to each method below
     this.handleChange = this.handleChange.bind (this);
-    this.handleNewIngredient = this.handleNewIngredient.bind(this);
-    this.handleChangeIng = this.handleChangeIng.bind(this);
+    this.handleNewIngredient = this.handleNewIngredient.bind (this);
+    this.handleChangeIng = this.handleChangeIng.bind (this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   // Handle input change
@@ -37,27 +46,33 @@ export class RecipeInput extends Component {
   }
 
   // Handle adding new ingredients
-  handleNewIngredient() {
-      // Deconstruct ingredients property from state into another variable
-      const {ingredients} = this.state;
-      // Pick up ingredient property within state
-      // Then spread the ingredients array, and push a new empty string into that array
-      this.setState({ingredients: [...ingredients, '']});
+  handleNewIngredient () {
+    // Deconstruct ingredients property from state into another variable
+    const {ingredients} = this.state;
+    // Pick up ingredient property within state
+    // Then spread the ingredients array, and push a new empty string into that array
+    this.setState ({ingredients: [...ingredients, '']});
   }
 
   // Hangle change of each engredient
-  handleChangeIng(e) {
-      // Extract the index of element that will be modifies from the name of the input field
-      // Split the name of event target (input) and get the second element with index 1, 
-      // aka the actual index of the ingredient set in the inputs array under render()
-      const index = Number(e.target.name.split('-')[1]);
-      // Set ingredients be equal to a new array returned by map() where if index of ingredient currently
-      // in the state matches the extracted index above, then that element will be whatever the event.target.value is
-      const ingredients = this.state.ingredients.map((ing, i) => (
-          i === index ? e.target.value : ing
-      ));
-      // Set ingredients property of the state to be equal to the ingredients array created above with map()
-      this.setState({ingredients});
+  handleChangeIng (e) {
+    // Extract the index of element that will be modifies from the name of the input field
+    // Split the name of event target (input) and get the second element with index 1,
+    // aka the actual index of the ingredient set in the inputs array under render()
+    const index = Number (e.target.name.split ('-')[1]);
+    // Set ingredients be equal to a new array returned by map() where if index of ingredient currently
+    // in the state matches the extracted index above, then that element will be whatever the event.target.value is
+    const ingredients = this.state.ingredients.map (
+      (ing, i) => (i === index ? e.target.value : ing)
+    );
+    // Set ingredients property of the state to be equal to the ingredients array created above with map()
+    this.setState ({ingredients});
+  }
+
+  handleSubmit (e) {
+    e.preventDefault ();
+    this.props.onSave({...this.state});
+    this.setState(emptyState);
   }
 
   render () {
@@ -66,7 +81,8 @@ export class RecipeInput extends Component {
     // Create JSX inputs array that will contain input fields for each ingredient currently within ingredients property of the state
     let inputs = ingredients.map ((ingredient, i) => (
       <div className="recipe-form-line" key={`ingredient-${i}`}>
-        <label>{i + 1}.
+        <label>
+          {i + 1}.
           <input
             type="text"
             name={`ingredient-${i}`} /*Very Important! This name will be later used to identify the index of the ingredient that needs to be modified */
@@ -82,9 +98,7 @@ export class RecipeInput extends Component {
       <div className="recipe-form-container">
         <form
           className="recipe-form"
-          onSubmit={() => {
-            /*this.hangleSubmit*/
-          }}
+          onSubmit={this.handleSubmit}
         >
           <button className="close-button" type="button" onClick={onClose}>
             X

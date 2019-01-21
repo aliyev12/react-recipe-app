@@ -35,21 +35,38 @@ class RecipeApp extends Component {
           img: 'https://source.unsplash.com/400x400/?pasta',
         },
       ],
-      nextRecipeId: uuid()
+      nextRecipeId: uuid (),
     };
-
-    this.onClose = this.onClose.bind(this);
+    // Bind "this" of component scope to methods below
+    this.onClose = this.onClose.bind (this);
+    this.handleSave = this.handleSave.bind(this);
   }
 
-  onClose() {
-      console.log('closing...');
+  onClose (e) {
+    e.preventDefault ();
+    console.log ('closing...');
   }
-  
+
+  onSave (e) {
+    console.log ('saving from RecipeApp');
+    console.log (e);
+  }
+
+  handleSave (recipe) {
+    this.setState((prevState, props) => {
+        const newRecipe = {...recipe, id: this.state.nextRecipeId};
+        return {
+            nextRecipeId: uuid(),
+            recipes: [...this.state.recipes, newRecipe]
+        }
+    });
+  }
+
   render () {
     return (
       <div className="App">
         <Navbar />
-        <RecipeInput onClose={this.onClose} />
+        <RecipeInput onClose={this.onClose} onSave={this.handleSave} />
         <RecipeList recipes={this.state.recipes} />
       </div>
     );
